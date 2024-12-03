@@ -57,8 +57,7 @@ fn part2() -> io::Result<()>{
     println!("Part 2 result: {}", result);
     Ok(())
 }
-fn main() -> io::Result<()>{
+fn main() {
     part1();
     part2();
-    Ok(())
 }
