@@ -22,62 +22,58 @@ fn read_file(path: &str) -> io::Result<Vec<Vec<i32>>> {
     }
     Ok(rows)
 }
+fn is_safe(row: &mut Vec::<i32>) -> bool {
+    let mut increasing = 0; // 0 : none, 1 : increasing, 2 : decreasing
+    for i in 0..row.len() - 1 {
+        let difference = row[i+1] - row[i];
+        if difference > 0 && difference.abs() <= 3 {
+            if increasing == 2 {
+                return false;
+            }
+            increasing = 1;
+        } else if difference < 0 && difference.abs() <= 3 {
+            if increasing == 1 {
+                return false;
+            }
+            increasing = 2;
+        }
+        else {
+            return false;
+        }
+    }
+    true
+}
 fn part1() {
-    let matrix = read_file("src/input.txt").unwrap();
+    let mut matrix = read_file("src/input.txt").unwrap();
     let mut result = 0;
     for i in 0..matrix.len() {
-        let first_difference = matrix[i][1] - matrix[i][0];
-        let increasing: bool =
-            if first_difference > 0 {
-                if first_difference.abs() <= 3 {
-                    true
-                } else {
-                    continue;
-                }
-            }
-            else if first_difference < 0 {
-                if first_difference.abs() <= 3 {
-                    false
-                } else {
-                    continue;
-                }
-            }
-            else { continue };
-        for j in 1..matrix[i].len() - 1 {
-            if increasing == true {
-                let x = matrix[i][j+1] - matrix[i][j];
-                if x > 0 {
-                    if x.abs() <= 3 {
-                        if j == matrix[i].len() - 2 {
-                            result += 1;
-                        }
-                    }
-                    else {
-                        break;
-                    }
-                } else {
-                    break;
-                    }
-                }
-            else if increasing == false {
-                let x = matrix[i][j+1] - matrix[i][j];
-                if x < 0 {
-                    if x.abs() <= 3 {
-                        if j == matrix[i].len() - 2 {
-                            result += 1;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-                else {
-                    break;
-                }
-            }
+        if is_safe(&mut matrix[i]) {
+            result += 1;
         }
     }
     println!("Part 1 result: {}", result);
 }
+fn part2() {
+    let mut matrix = read_file("src/input.txt").unwrap();
+    let mut result = 0;
+    for i in 0..matrix.len() {
+        if is_safe(&mut matrix[i]) {
+            result += 1;
+            continue;
+        }
+        for j in 0..matrix[i].len() {
+            let mut new_row = matrix[i].clone();
+            new_row.remove(j);
+            if is_safe(&mut new_row) {
+                result += 1;
+                break;
+            }
+        }
+    }
+    println!("Part 2 result: {}", result);
+}
+
 fn main() {
     part1();
+    part2();
 }
