@@ -1,6 +1,6 @@
-use std::io::{self, BufRead};
-use std::io::BufReader;
 use std::fs::File;
+use std::io::BufReader;
+use std::io::{self, BufRead};
 
 fn read_file(path: &str) -> io::Result<(Vec<i32>, Vec<i32>)> {
     let file = File::open(path)?;
@@ -28,7 +28,7 @@ fn read_file(path: &str) -> io::Result<(Vec<i32>, Vec<i32>)> {
     }
     Ok((list1, list2))
 }
-fn part1() -> io::Result<()>{
+fn part1() -> io::Result<()> {
     let (mut list1, mut list2) = read_file("src/input.txt")?;
     list1.sort();
     list2.sort();
@@ -39,7 +39,7 @@ fn part1() -> io::Result<()>{
     println!("Part 1 result: {}", result);
     Ok(())
 }
-fn count_occurence(list: &Vec<i32>, element: i32) -> i32{
+fn count_occurence(list: &Vec<i32>, element: i32) -> i32 {
     let mut count = 0;
     for item in list {
         if *item == element {
@@ -48,7 +48,7 @@ fn count_occurence(list: &Vec<i32>, element: i32) -> i32{
     }
     count
 }
-fn part2() -> io::Result<()>{
+fn part2() -> io::Result<()> {
     let (list1, list2) = read_file("src/input.txt")?;
     let mut result = 0;
     for i in 0..list1.len() {
