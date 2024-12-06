@@ -11,8 +11,7 @@ fn read_file(path: &str) -> io::Result<Vec<String>> {
             Ok(line) => line,
             Err(e) => {
                 eprintln!("Error: {}", e);
-                continue;
-            }
+                continue; }
         };
         rows.push(line);
     }
